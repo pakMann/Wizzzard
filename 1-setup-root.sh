@@ -144,9 +144,20 @@ if ! grep -q "^AllowUsers ${NEW_USERNAME}" "$SSH_CONFIG"; then
     log_info "SSH access restricted to user '${NEW_USERNAME}'."
 fi
 
-# Reload SSH service
-log_info "Reloading SSH service to apply changes..."
-sudo systemctl reload sshd || sudo systemctl restart sshd
+# Attempt to restart SSH using common service names
+echo "Restarting SSH service to apply changes..."
+if systemctl list-units --type=service | grep -q 'sshd.service'; then
+    systemctl restart sshd.service
+    echo "Restarted sshd.service."
+elif systemctl list-units --type=service | grep -q 'ssh.service'; then
+    systemctl restart ssh.service
+    echo "Restarted ssh.service."
+else
+    # TODO: move this error message to the last part of the script
+    # so it will displayed to the user when finished the setup process
+    echo "Could not determine SSH service name. Please restart it manually."
+fi
+
 log_success "SSH hardened. Remember to connect on port ${SSH_PORT} as '${NEW_USERNAME}' with your SSH key."
 
 

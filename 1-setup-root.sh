@@ -47,7 +47,7 @@ sudo apt update -y
 sudo apt upgrade -y
 
 log_info "Installing essential packages..."
-sudo apt install -y build-essential curl git zsh gnupg software-properties-common apt-transport-https ca-certificates ruby-full libpq-dev libffi-dev libyaml-dev
+sudo apt install -y build-essential curl git zsh gnupg software-properties-common apt-transport-https ca-certificates ruby-full libpq-dev libffi-dev libyaml-dev zlib1g-dev
 
 log_success "System updated and essential packages installed."
 
